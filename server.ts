@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import { GoogleGenAI, Modality, Type } from '@google/genai';
 import dotenv from 'dotenv';
 import { askAI } from './gemini';
@@ -629,8 +630,10 @@ async function startServer() {
     // The preview proxy does not expose Vite's HMR WebSocket endpoint. Vite may
     // still inject /@vite/client in middleware mode, so serve a no-op module
     // instead of allowing the client to open a doomed WebSocket connection.
-    app.get('/@vite/client', (_req, res) => {
-      res.type('application/javascript').send('export {};');
+    app.get('/', (_req, res) => {
+      const indexPath = path.join(process.cwd(), 'index.html');
+      const html = fs.readFileSync(indexPath, 'utf8');
+      res.type('html').send(html);
     });
     app.use(vite.middlewares);
   } else {

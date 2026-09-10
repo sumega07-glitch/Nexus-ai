@@ -11,8 +11,11 @@ export default defineConfig(() => {
       {
         name: 'disable-preview-hmr-client',
         enforce: 'post',
-        transformIndexHtml(html) {
-          return html.replace(/<script type="module" src="\/@vite\/client"><\/script>/g, '');
+        transformIndexHtml: {
+          order: 'post',
+          handler(html) {
+            return html.replace(/<script[^>]+src=["'][^"']*\/@vite\/client[^"']*["'][^>]*>\s*<\/script>/gi, '');
+          },
         },
       },
     ],
