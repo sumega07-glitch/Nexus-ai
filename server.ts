@@ -627,9 +627,11 @@ async function startServer() {
       // The preview proxy does not expose a Vite WebSocket endpoint.
       appType: 'custom',
     });
-    // The preview proxy does not expose Vite's HMR WebSocket endpoint. Vite may
-    // still inject /@vite/client in middleware mode, so serve a no-op module
-    // instead of allowing the client to open a doomed WebSocket connection.
+    // The hosted preview has no Vite HMR WebSocket endpoint. Handle the client
+    // path before Vite middleware so a stale injected script can never connect.
+    app.get('/@vite/client', (_req, res) => {
+      res.type('application/javascript').send('export {};');
+    });
     app.get('/', (_req, res) => {
       const indexPath = path.join(process.cwd(), 'index.html');
       const html = fs.readFileSync(indexPath, 'utf8');
