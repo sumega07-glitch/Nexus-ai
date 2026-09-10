@@ -9,27 +9,18 @@
     <meta property="og:description" content="Enterprise multi-tenant AI operating system and consulting platform featuring client CRM, multi-step process discovery, ROI modeling, dynamic proposal generator, custom AI agent studio, and real-time voice agent." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script>
-      // Gracefully prevent unhandled rejection overlays for benign Vite WebSocket connection attempts in container preview
-      window.addEventListener('unhandledrejection', function (e) {
-        var reason = e && e.reason;
-        var msg = typeof reason === 'string' ? reason : (reason && (reason.message || reason.stack)) || '';
-        if (msg.indexOf('WebSocket') !== -1 || msg.indexOf('[vite]') !== -1 || msg.indexOf('closed without opened') !== -1) {
-          e.preventDefault();
-          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-        }
-      });
-      window.addEventListener('error', function (e) {
-        var msg = (e && e.message) || '';
-        if (msg.indexOf('WebSocket') !== -1 || msg.indexOf('[vite]') !== -1 || msg.indexOf('closed without opened') !== -1) {
-          e.preventDefault();
-          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+      // The hosted preview does not expose the local Vite HMR socket.
+      window.addEventListener('unhandledrejection', (event) => {
+        const message = String(event.reason?.message ?? event.reason ?? '');
+        if (message.includes('WebSocket closed without opened')) {
+          event.preventDefault();
         }
       });
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   </head>
   <body class="h-full bg-[#050505] text-[#e5e7eb] font-sans selection:bg-blue-600 selection:text-white">
     <div id="root" class="h-full"></div>

@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import { GoogleGenAI, Modality, Type } from '@google/genai';
 import dotenv from 'dotenv';
 import { askAI } from './gemini';
@@ -617,8 +618,24 @@ async function startServer() {
   if (process.env.NODE_ENV !== 'production') {
     const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
-      server: { middlewareMode: true, hmr: false },
-      appType: 'spa',
+      server: {
+        middlewareMode: true,
+        hmr: false,
+        watch: null,
+      },
+      // Keep Vite from injecting its browser HMR client into the Express-served SPA.
+      // The preview proxy does not expose a Vite WebSocket endpoint.
+      appType: 'custom',
+    });
+    // The hosted preview has no Vite HMR WebSocket endpoint. Handle the client
+    // path before Vite middleware so a stale injected script can never connect.
+    app.get('/@vite/client', (_req, res) => {
+      res.type('application/javascript').send('export {};');
+    });
+    app.get('/', (_req, res) => {
+      const indexPath = path.join(process.cwd(), 'index.html');
+      const html = fs.readFileSync(indexPath, 'utf8');
+      res.type('html').send(html);
     });
     app.use(vite.middlewares);
   } else {

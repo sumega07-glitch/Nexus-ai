@@ -5,7 +5,20 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      {
+        name: 'disable-preview-hmr-client',
+        enforce: 'post',
+        transformIndexHtml: {
+          order: 'post',
+          handler(html) {
+            return html.replace(/<script[^>]+src=["'][^"']*\/@vite\/client[^"']*["'][^>]*>\s*<\/script>/gi, '');
+          },
+        },
+      },
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
