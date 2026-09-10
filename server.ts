@@ -627,11 +627,7 @@ async function startServer() {
       // The preview proxy does not expose a Vite WebSocket endpoint.
       appType: 'custom',
     });
-    // The hosted preview has no Vite HMR WebSocket endpoint. Handle the client
-    // path before Vite middleware so a stale injected script can never connect.
-    app.get('/@vite/client', (_req, res) => {
-      res.type('application/javascript').send('export {};');
-    });
+
     app.get('/', (_req, res) => {
       const indexPath = path.join(process.cwd(), 'index.html');
       const html = fs.readFileSync(indexPath, 'utf8');
