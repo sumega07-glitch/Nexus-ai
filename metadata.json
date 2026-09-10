@@ -1,0 +1,6 @@
+{
+  "name": "NEXUSAI - Multi-Tenant AI Operating System",
+  "description": "Enterprise multi-tenant AI operating system and consulting platform featuring client CRM, multi-step process discovery, ROI modeling, dynamic proposal generator, custom AI agent studio, and real-time voice agent.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
